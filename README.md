@@ -84,7 +84,7 @@ Checkpoints are in `./checkpoints/DATA-NAME`. Two checkpoints are kept based on 
 e.g. Train on `WebOfScience` with `batch=12, lambda=0.05, gamma=0.02`. Checkpoints will be in `checkpoints/WebOfScience-test/`.
 
 ```shell
-python train.py --name test --batch 12 --data WebOfScience --lambda 0.05 --thre 0.02
+python train.py --name test --batch 12 --data WebOfScience --lamb 0.05 --thre 0.02
 ```
 
 ### Reproducibility
@@ -152,3 +152,18 @@ python test.py --name WebOfScience-test
     pages = "7109--7119",
 }
 ```
+
+
+## Ubuntu Config
+
+nvcc --version 
+sudo apt install nvidia-cuda-toolkit
+
+nvidia driver issue: https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html 
+
+cuda lib error:
+LD_LIBRARY_PATH=/opt/conda/lib/python3.9/site-packages/nvidia/cublas/lib/:$LD_LIBRART_PATH
+
+out of memory cuda - reduce batch size
+
+python train.py --name test --batch 4 --data WebOfScience --lamb 0.05 --thre 0.02
