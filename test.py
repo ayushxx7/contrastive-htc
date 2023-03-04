@@ -27,7 +27,7 @@ if __name__ == '__main__':
     if not hasattr(args, 'graph'):
         args.graph = False
     print(args)
-    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
 
     label_dict = torch.load(os.path.join(data_path, 'bert_value_dict.pt'))
     label_dict = {i: tokenizer.decode(v, skip_special_tokens=True) for i, v in label_dict.items()}

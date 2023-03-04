@@ -1,6 +1,9 @@
 from transformers import AutoTokenizer
 from fairseq.data import data_utils
 import torch
+
+torch.cuda.empty_cache()
+
 from torch.utils.data import Dataset, DataLoader, Subset
 from model.optim import ScheduledOptim, Adam
 from tqdm import tqdm
@@ -99,14 +102,14 @@ if __name__ == '__main__':
         wandb.init(config=args, project='htc')
     utils.seed_torch(args.seed)
     args.name = args.data + '-' + args.name
-    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
     data_path = os.path.join('data', args.data)
     label_dict = torch.load(os.path.join(data_path, 'bert_value_dict.pt'))
     label_dict = {i: tokenizer.decode(v, skip_special_tokens=True) for i, v in label_dict.items()}
     num_class = len(label_dict)
 
     dataset = BertDataset(device=device, pad_idx=tokenizer.pad_token_id, data_path=data_path)
-    model = ContrastModel.from_pretrained('bert-base-uncased', num_labels=num_class,
+    model = ContrastModel.from_pretrained('distilbert-base-uncased', num_labels=num_class,
                                           contrast_loss=args.contrast, graph=args.graph,
                                           layer=args.layer, data_path=data_path, multi_label=args.multi,
                                           lamb=args.lamb, threshold=args.thre, tau=args.tau)
